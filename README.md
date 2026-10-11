@@ -46,6 +46,7 @@ Illegal dumping was predicted best (20 of 22 correct). The model mixed up pothol
 
 The dataset is small and synthetic, and the test set only has 90 rows. There is no text or image data. I would test the model on more data before trusting it.
 
-## Version Control
-- master: stable version of my project
-- update-readme-version-control: branch I used to add this section, then merged into master
+   ## Version Control
+   - master: stable version of my project
+   - update-readme-version-control: branch I used to update this section, then merged into master
+   - Workflow: I pushed my evidence plots from my laptop, edited the README on GitHub and pulled it back, then made this change on a branch and merged it into master.
