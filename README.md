@@ -1,20 +1,51 @@
-Development for Artificial Intelligence | Course Assessment
-DEVELOPMENT FOR ARTIFICIAL INTELLIGENCE
-COURSE ASSESSMENT
-CivicRoute AI Supporting Data
-Data Dictionary and Category Guide
-The supplied structured data is synthetic educational materials. They do not represent real residents, real municipal requests or real personal information. Assessment scope Only the supplied structured CivicRoute AI dataset, namely civic_requests_prepared.csv is required for the assessment. The TensorFlow/Keras starter notebook is also supplied to aid your coding efforts.
-Request Categories Category label Plain-language meaning pothole Damage or a hole in a road surface. water_leak Visible or reported water escaping from municipal infrastructure. broken_streetlight A streetlight that is not operating correctly. illegal_dumping Waste or unwanted material left in an unauthorised public area.
-Assessment Dataset Fields
-The following fields appear in the civic_requests_prepared.csv dataset file. Field Type Description Notes request_id text Unique educational request identifier. Identifier; exclude from model inputs. created_hour integer Hour of day when the request was created, from 0 to 23. Prepared numerical field; possible model input. neighbourhood category Neighbourhood linked to the request. Categorical field; consider fairness and reporting-pattern limitations. channel category Submission channel: mobile app, web portal, call centre or service office. Categorical field with 4 missing values to inspect and handle. urgency_level category Prepared urgency indication: low, medium or high. Prepared categorical field; input feature, not a final routing decision. recent_rain_flag category Whether recent rain was recorded. Yes/no categorical field. night_report_flag category Whether the request was submitted at night. Derived from created_hour; consider whether both fields are needed. repeat_report_count integer Number of similar nearby reports recorded recently. Prepared numerical feature. image_quality_score decimal Prepared image-quality score from 0 to 1. Prepared image-quality metadata score from 0 to 1; 10 values are missing. No image files are supplied. nearby_asset_age_years decimal Approximate age of the nearby infrastructure asset. Prepared numerical feature. description_word_count integer Number of words in the prepared request description. Prepared numerical feature; the description text itself is not supplied. previous_resolution_days decimal Days previously required to resolve a similar case. Prepared numerical feature with 9 missing values to inspect and handle. category_label category Target request category. Prediction target with four balanced request categories.
-Development for Artificial Intelligence | Course Assessment
-Dataset Summary
-Item Summary
-Assessment file and size civic_requests_prepared.csv: 600 records and 13 fields.
-Target categories 4 balanced categories with 150 records each: pothole,
-water_leak, broken_streetlight and illegal_dumping.
-Missing values channel: 4; image_quality_score: 10; previous_resolution_days:
-9. All other fields are complete.
-Assessment use Inspect and slice the data, handle the small preparation issues,
-encode or transform selected fields, then build one small
-TensorFlow/Keras classifier.
+# CivicRoute AI
+
+Development for Artificial Intelligence – Course Assessment
+Tayyab Sharjil Akram (116062)
+
+## About
+
+This project predicts the category of a civic request (broken streetlight, illegal dumping, pothole or water leak) using a small TensorFlow/Keras model. It is a prototype for the course, not a finished system.
+
+## Data
+
+`data/civic_requests_prepared.csv` is the dataset supplied with the assessment. It has 600 rows and 13 columns, with 150 rows for each category. It is synthetic, so it contains no real people.
+
+## Files
+
+- `civicroute_assessment.ipynb` – all my code and notes
+- `data/` – the dataset
+- `Selected Evidence/` – accuracy plot and confusion matrix
+- `requirements.txt` – libraries I used
+
+## How to run
+1. Install libraries: `pip install -r requirements.txt`
+2. Open `civicroute_assessment.ipynb` in Jupyter
+3. Run all cells from top to bottom
+
+I used Python 3.12 and set the random seed to 42.
+
+## What I did
+
+- Checked the data, the missing values and the class balance
+- Kept 8 features and removed `request_id`, `night_report_flag`, `neighbourhood` (possible bias) and `previous_resolution_days` (not known for a new request)
+- Filled missing `channel` values with the most common value, and `image_quality_score` with the median
+- Encoded the categorical columns and scaled the numerical ones
+- Split the data 70/15/15 into train, validation and test
+- Trained a small model (Dense 16 → 8 → 4) for 50 epochs
+
+## Results
+
+- Training accuracy: 0.81
+- Validation accuracy: 0.68
+- Test accuracy: 0.71 (64 of 90 correct)
+
+Illegal dumping was predicted best (20 of 22 correct). The model mixed up potholes and water leaks the most, probably because both are linked to rain. The gap between training and validation accuracy shows some overfitting.
+
+## Limitations
+
+The dataset is small and synthetic, and the test set only has 90 rows. There is no text or image data. I would test the model on more data before trusting it.
+
+## Version Control
+- master: stable version of my project
+- update-readme-version-control: branch I used to add this section, then merged into master
